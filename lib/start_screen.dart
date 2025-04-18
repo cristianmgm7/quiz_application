@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+// import assets.images; // This import is incorrect and will cause an error
+// Correct import statement for images
+// Assuming you have an images.dart file in assets folder
 
 class StartScreen extends StatelessWidget {
-  const StartScreen({super.key, required this.onPressed});
+  const StartScreen(this.startQuiz, {super.key});
 
-  final dynamic onPressed;
+  final void Function() startQuiz;
+
+  void onPressed() {
+    startQuiz();
+  }
 
   @override
   Widget build(BuildContext context) {
