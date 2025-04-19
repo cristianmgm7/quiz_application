@@ -10,9 +10,23 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
+  int currentQuestionIndex = 0;
+
+  void answerQuestion(String selectedAnswer) {
+    setState(() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+      } else {
+        // For now, just reset to first question
+        currentQuestionIndex = 0;
+        // Later you could navigate to a Results screen
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final currentQuestion = questions[1];
+    final currentQuestion = questions[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,
@@ -24,7 +38,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           children: [
             Text(
               currentQuestion.question,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
