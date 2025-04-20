@@ -12,7 +12,7 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  int currentQuestionIndex = 0;
+  int currentQuestionIndex = 0; // --> to keep track of the current question
 
   void answerQuestion(String selectedAnswer) {
     // acces to onSelectAnswer from the widget
