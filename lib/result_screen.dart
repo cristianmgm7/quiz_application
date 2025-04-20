@@ -3,8 +3,13 @@ import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/question_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({super.key, required this.chosenAnswers});
+  const ResultsScreen({
+    super.key,
+    required this.chosenAnswers,
+    required this.onRestartQuiz,
+  });
 
+  final void Function() onRestartQuiz;
   final List<String> chosenAnswers;
 
   // Method to calculate the score
@@ -50,13 +55,10 @@ class ResultsScreen extends StatelessWidget {
             const SizedBox(height: 50),
             QuestionSummary(getScore()), // ---> this is the summary of the quiz
             const SizedBox(height: 50),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            TextButton.icon(
               style: TextButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 26, 138, 169),
                 foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40,
                   vertical: 20,
@@ -65,14 +67,9 @@ class ResultsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Text(
-                'Restart Quiz',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              onPressed: onRestartQuiz,
+              label: const Text('Restart Quiz'),
+              icon: const Icon(Icons.refresh),
             ),
           ],
         ),
