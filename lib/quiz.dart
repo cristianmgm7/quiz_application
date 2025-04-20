@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/questions_screen.dart';
 import 'package:quiz_app/start_screen.dart';
 
@@ -10,41 +11,34 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  //--> _QuizState becouse is private
-
-  // another way to doit is
-  // activeScreen = 'start-screen';
-  Widget? activeScreen;
-
-  // 1. method
-  @override
-  void initState() {
-    activeScreen = StartScreen(chooseScreen);
-    super.initState();
-  }
+  List<String> selectedAnswers = []; // --> to gather the answers
+  var activeScreen = 'start-screen';
 
   void chooseScreen() {
     setState(() {
-      activeScreen = const QuestionsScreen();
+      activeScreen = 'questions-screen';
     });
+  }
+
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        selectedAnswers = [];
+        activeScreen = 'start-screen';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // 3. method
-    // final screenWidget = activeScreen == 'start-screen'
-    //     ? StartScreen(chooseScreen)
-    //     : const QuestionsScreen();
-
-    // 4 . method
-    // widget screenWidget=startScreen(chooseScreen);
+    Widget screenWidget = StartScreen(chooseScreen);
     //
-    // if (activeScreen == 'questions-screen') {
-    //   screenWidget = const QuestionsScreen();
+    if (activeScreen == 'questions-screen') {
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    }
 
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -57,18 +51,7 @@ class _QuizState extends State<Quiz> {
               end: Alignment.bottomRight,
             ),
           ),
-          // 1. method
-          child: activeScreen,
-          // 3. method
-          // with the method above
-          // child: screenWidget,
-          // --------------------
-          // with the method below
-          // -------
-          // 2 .method
-          // child: activeScreen == 'start-screen'
-          //     ? StartScreen(chooseScreen)
-          //     : const QuestionsScreen(),
+          child: screenWidget,
         ),
       ),
     );

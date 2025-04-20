@@ -3,7 +3,9 @@ import 'package:quiz_app/answer_button.dart';
 import 'package:quiz_app/data/questions.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key});
+  const QuestionsScreen({super.key, required this.onSelectAnswer});
+
+  final void Function(String answer) onSelectAnswer;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
@@ -13,14 +15,10 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   int currentQuestionIndex = 0;
 
   void answerQuestion(String selectedAnswer) {
+    // acces to onSelectAnswer from the widget
+    widget.onSelectAnswer(selectedAnswer);
     setState(() {
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-      } else {
-        // For now, just reset to first question
-        currentQuestionIndex = 0;
-        // Later you could navigate to a Results screen
-      }
+      currentQuestionIndex++;
     });
   }
 
@@ -40,7 +38,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               currentQuestion.question,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
@@ -48,7 +46,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             const SizedBox(height: 50),
             // this is a list of answers, ... its a spread operator
             ...currentQuestion.getShuffledAnswers().map((item) {
-              return AnwerButton(answerText: item, onTap: () {});
+              return AnwerButton(
+                answerText: item,
+                onTap: () {
+                  answerQuestion(item);
+                },
+              );
             }),
           ],
         ),
